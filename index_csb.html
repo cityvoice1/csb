@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Service Bank (CSB) - Banking with Purpose</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* All existing CSS remains exactly the same - no changes to design */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --navy-blue: #002B5C;
+            --sky-blue: #4A90E2;
+            --light-blue: #E8F4FD;
+            --white: #FFFFFF;
+            --gray-light: #F5F7FA;
+            --gray: #6C757D;
+            --success: #28a745;
+            --error: #dc3545;
+        }
+        
+        body {
+            background-color: var(--white);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--navy-blue), var(--sky-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy-blue);
+        }
+        
+        .logo-text span {
+            color: var(--sky-blue);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--navy-blue);
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.3s;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--sky-blue);
+        }
+        
+        nav a.active {
+            color: var(--sky-blue);
+        }
+        
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--sky-blue);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+        
+        .btn-login {
+            background-color: transparent;
+            color: var(--navy-blue);
+            border: 1px solid var(--navy-blue);
+        }
+        
+        .btn-login:hover {
+            background-color: var(--navy-blue);
+            color: white;
+        }
+        
+        .btn-register {
+            background-color: var(--sky-blue);
+            color: white;
+        }
+        
+        .btn-register:hover {
+            background-color: var(--navy-blue);
+        }
+        
+        /* Page Content Area */
+        .page-content {
+            min-height: calc(100vh - 400px);
+            padding: 40px 0;
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-blue);
+        }
+        
+        .page-header h1 {
+            color: var(--navy-blue);
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            color: var(--gray);
+            font-size: 18px;
+        }
+        
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+        }
+        
+        .login-box {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 43, 92, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            border-top: 5px solid var(--sky-blue);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h2 {
+            color: var(--navy-blue);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            color: var(--gray);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--navy-blue);
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--sky-blue);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+        }
+        
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .forgot-password {
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .btn-login-submit {
+            width: 100%;
+            background-color: var(--navy-blue);
+            color: white;
+            padding: 14px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .btn-login-submit:hover {
+            background-color: var(--sky-blue);
+        }
+        
+        .login-footer {
+            text-align: center;
+            color: var(--gray);
+        }
+        
+        .login-footer a {
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .message {
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success-message {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+        
+        .error-message {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+        
+        /* Account Message Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-top: 5px solid var(--sky-blue);
+            text-align: center;
+        }
+        
+        .modal h3 {
+            color: var(--navy-blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .modal p {
+            color: var(--gray);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .modal-email {
+            background-color: var(--light-blue);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-weight: 600;
+            color: var(--navy-blue);
+            font-size: 18px;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            line-height: 1.4;
+        }
+        
+        .modal-close {
+            background-color: var(--navy-blue);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        .modal-close:hover {
+            background-color: var(--sky-blue);
+        }
+        
+        /* Content Pages */
+        .content-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--sky-blue);
+            margin-bottom: 30px;
+        }
+        
+        .content-card h2 {
+            color: var(--navy-blue);
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .content-card p {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .service-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-top: 3px solid var(--sky-blue);
+            transition: transform 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-card h3 {
+            color: var(--navy-blue);
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--light-blue) 0%, rgba(255,255,255,1) 100%);
+            padding: 80px 0;
+        }
+        
+        .hero-container {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+        
+        .hero-content {
+            flex: 1;
+        }
+        
+        .hero-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 43, 92, 0.1);
+        }
+        
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .hero h1 {
+            font-size: 42px;
+            color: var(--navy-blue);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .hero-highlight {
+            color: var(--sky-blue);
+            font-weight: 700;
+        }
+        
+        .btn-primary {
+            background-color: var(--navy-blue);
+            color: white;
+            padding: 14px 32px;
+            font-size: 18px;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--sky-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 43, 92, 0.2);
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--navy-blue);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background-color: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--sky-blue);
+            font-size: 28px;
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            padding: 80px 0;
+            background-color: var(--light-blue);
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .testimonial-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 35px 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--sky-blue);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--navy-blue), var(--sky-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .testimonial-info h4 {
+            color: var(--navy-blue);
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .testimonial-info p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .testimonial-rating {
+            color: #FFC107;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .testimonial-text {
+            color: var(--gray);
+            font-style: italic;
+            line-height: 1.7;
+        }
+        
+        /* Community Section */
+        .community {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+        
+        .community-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+        
+        .community-text {
+            flex: 1;
+        }
+        
+        .community-text h2 {
+            font-size: 36px;
+            color: var(--navy-blue);
+            margin-bottom: 20px;
+        }
+        
+        .community-text p {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        
+        .community-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .stat-item h3 {
+            font-size: 42px;
+            color: var(--sky-blue);
+            margin-bottom: 5px;
+        }
+        
+        .stat-item p {
+            color: var(--navy-blue);
+            font-weight: 600;
+        }
+        
+        .community-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 43, 92, 0.1);
+        }
+        
+        .community-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--navy-blue);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: white;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--sky-blue);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
+            .hero-container, .community-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .section-title h2 {
+                font-size: 32px;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero, .services, .testimonials, .community {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .community-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal {
+                padding: 30px;
+                width: 95%;
+            }
+            
+            .modal h3 {
+                font-size: 22px;
+            }
+            
+            .modal p {
+                font-size: 16px;
+            }
+            
+            .modal-email {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .modal {
+                padding: 25px 20px;
+            }
+            
+            .modal h3 {
+                font-size: 20px;
+            }
+            
+            .modal p {
+                font-size: 15px;
+            }
+            
+            .modal-email {
+                font-size: 15px;
+                padding: 10px;
+            }
+        }
+        
+        /* Hidden class for page navigation */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Account Creation Modal -->
+    <div id="accountModal" class="modal-overlay">
+        <div class="modal">
+            <h3>Personalized Account Setup</h3>
+            <p>At Community Service Bank, we believe in providing personalized banking solutions tailored to your unique needs. To ensure you receive the best possible service, we handle new account creation through our dedicated customer service team.</p>
+            
+            <p>Please email us at:</p>
+            <div class="modal-email">accounts@communityservicebank.com</div>
+            
+            <p>Our team will contact you within 24 hours to guide you through the account setup process and answer any questions you may have about our banking services.</p>
+            
+            <button class="modal-close" id="modalClose">Close</button>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo" id="homeLink">
+                <div class="logo-icon">CSB</div>
+                <div class="logo-text">Community <span>Service Bank</span></div>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#" id="navHome" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#" id="navBanking"><i class="fas fa-university"></i> Banking</a></li>
+                    <li><a href="#" id="navLoans"><i class="fas fa-handshake"></i> Loans</a></li>
+                    <li><a href="#" id="navCards"><i class="fas fa-credit-card"></i> Cards</a></li>
+                    <li><a href="#" id="navCommunity"><i class="fas fa-users"></i> Community</a></li>
+                    <li><a href="#" id="navContact"><i class="fas fa-phone-alt"></i> Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="auth-buttons">
+                <button class="btn btn-login" id="loginButton">Login</button>
+                <button class="btn btn-register" id="registerButton">Open Account</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area - Home Page (Default) -->
+    <div id="homePage" class="page-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <h1>Banking with Purpose for a <span class="hero-highlight">Better Community</span></h1>
+                    <p>At Community Service Bank, we believe in putting people first. Our mission is to provide exceptional financial services while investing in the communities we serve.</p>
+                    <button class="btn btn-primary" id="heroRegisterBtn">Open Account</button>
+                </div>
+                <div class="hero-image">
+                    <div style="width:100%;height:400px;background:linear-gradient(135deg, var(--sky-blue) 0%, var(--navy-blue) 100%);display:flex;align-items:center;justify-content:center;color:white;font-size:24px;">
+                        <div style="text-align:center;padding:20px;">
+                            <i class="fas fa-users" style="font-size:60px;margin-bottom:20px;"></i>
+                            <p>Building Financial Futures Together</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Our Financial Services</h2>
+                    <p>We offer a comprehensive range of banking services designed to meet your personal and business needs.</p>
+                </div>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <h3>Savings Accounts</h3>
+                        <p>Earn competitive interest rates with our range of savings accounts designed to help you reach your financial goals.</p>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h3>Mortgage Loans</h3>
+                        <p>Flexible mortgage options with personalized guidance to help you find the perfect home for your family.</p>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h3>Business Banking</h3>
+                        <p>Complete banking solutions for businesses of all sizes, from startups to established enterprises.</p>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h3>Credit Cards</h3>
+                        <p>Smart credit card options with rewards, cashback, and low interest rates tailored to your lifestyle.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials">
+            <div class="container">
+                <div class="section-title">
+                    <h2>What Our Customers Say</h2>
+                    <p>Don't just take our word for it. Here's what our customers have to say about their experience with Community Service Bank.</p>
+                </div>
+                
+                <div class="testimonials-grid">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">JS</div>
+                            <div class="testimonial-info">
+                                <h4>Jennifer Simmons</h4>
+                                <p>Small Business Owner</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"As a small business owner, CSB has been a game-changer. Their business banking specialists helped me secure a loan that allowed me to expand my bakery. The personalized service is unlike anything I've experienced with big banks."</p>
+                    </div>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">MR</div>
+                            <div class="testimonial-info">
+                                <h4>Michael Rodriguez</h4>
+                                <p>First-Time Homebuyer</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"The mortgage team at CSB made buying our first home a smooth and understandable process. They took the time to explain everything and found us a rate that saved us thousands over the life of our loan."</p>
+                    </div>
+                    
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">SC</div>
+                            <div class="testimonial-info">
+                                <h4>Sarah Chen</h4>
+                                <p>Savings Account Holder</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"I've been with CSB for 8 years and their high-yield savings account has helped me save for both a new car and a down payment on a house. The online banking is seamless, and their customer service is always responsive."</p>
+                    </div>
+                    
+                    <!-- Testimonial 4 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">DW</div>
+                            <div class="testimonial-info">
+                                <h4>David Wilson</h4>
+                                <p>Retirement Planning Client</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"The financial advisors at CSB helped me create a retirement plan that actually makes sense for my goals. They're transparent about fees and genuinely care about my financial wellbeing."</p>
+                    </div>
+                    
+                    <!-- Testimonial 5 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">AP</div>
+                            <div class="testimonial-info">
+                                <h4>Amanda Patel</h4>
+                                <p>Student Loan Refinance</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testimonial-text">"Refinancing my student loans with CSB cut my monthly payments by 30%! The process was straightforward, and their team was incredibly helpful throughout."</p>
+                    </div>
+                    
+                    <!-- Testimonial 6 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">TG</div>
+                            <div class="testimonial-info">
+                                <h4>Thomas Green</h4>
+                                <p>Non-Profit Director</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"Our community organization received a grant from the CSB Foundation that allowed us to expand our financial literacy programs. Their commitment to the community is genuine and impactful."</p>
+                    </div>
+                    
+                    <!-- Testimonial 7 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">LM</div>
+                            <div class="testimonial-info">
+                                <h4>Lisa Martinez</h4>
+                                <p>Credit Card User</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"The CSB Rewards Card has amazing cashback benefits that I actually use. I've earned hundreds back just from my regular spending. Their fraud protection also gave me peace of mind when my card was compromised last year."</p>
+                    </div>
+                    
+                    <!-- Testimonial 8 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">RK</div>
+                            <div class="testimonial-info">
+                                <h4>Robert Kim</h4>
+                                <p>Auto Loan Customer</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"Got pre-approved for an auto loan in minutes through the CSB mobile app. The rate was significantly better than what the dealership offered, saving me money upfront and over time."</p>
+                    </div>
+                    
+                    <!-- Testimonial 9 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">EC</div>
+                            <div class="testimonial-info">
+                                <h4>Elena Carter</h4>
+                                <p>Family Banking</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"We have all our family banking with CSB - checking, savings, and college funds for our kids. Their online tools make it easy to manage everything in one place, and the local branch staff know us by name."</p>
+                    </div>
+                    
+                    <!-- Testimonial 10 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <div class="testimonial-avatar">JB</div>
+                            <div class="testimonial-info">
+                                <h4>James Bennett</h4>
+                                <p>Senior Banking Client</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"After banking with larger institutions for decades, switching to CSB was the best financial decision I've made. They treat me like a person, not an account number, and their senior banking services are exceptional."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Section -->
+        <section class="community">
+            <div class="container community-content">
+                <div class="community-text">
+                    <h2>Investing in Our Community</h2>
+                    <p>At CSB, we measure success not just by profits, but by the positive impact we make in our communities. A portion of our earnings is reinvested into local initiatives that create opportunity and promote financial literacy.</p>
+                    <p>Our Community Grant Program has supported over 200 local projects focused on education, small business development, and affordable housing.</p>
+                    
+                    <div class="community-stats">
+                        <div class="stat-item">
+                            <h3>15+</h3>
+                            <p>Years of Service</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>$5.2M</h3>
+                            <p>Community Investment</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>50K+</h3>
+                            <p>Happy Customers</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="community-image">
+                    <div style="width:100%;height:400px;background:linear-gradient(135deg, var(--navy-blue) 0%, var(--sky-blue) 100%);display:flex;align-items:center;justify-content:center;color:white;font-size:24px;">
+                        <div style="text-align:center;padding:20px;">
+                            <i class="fas fa-hand-holding-heart" style="font-size:60px;margin-bottom:20px;"></i>
+                            <p>Supporting Communities Since 2008</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Page (Hidden by Default) -->
+    <div id="loginPage" class="page-content hidden">
+        <div class="container login-container">
+            <div class="login-box">
+                <div class="login-header">
+                    <h2>Welcome Back to CSB</h2>
+                    <p>Sign in to your Community Service Bank account</p>
+                </div>
+                
+                <div id="loginMessage" class="message"></div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" class="form-control" placeholder="Enter your username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-container">
+                            <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                            <button type="button" class="toggle-password" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="login-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="rememberMe">
+                            <label for="rememberMe">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-login-submit">Sign In</button>
+                </form>
+                
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="#" id="signupLink">Open an Account</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Banking Page (Hidden by Default) -->
+    <div id="bankingPage" class="page-content hidden">
+        <div class="container">
+            <div class="page-header">
+                <h1>Banking Services</h1>
+                <p>Explore our comprehensive range of personal and business banking solutions</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>Personal Banking</h2>
+                <p>Our personal banking services are designed to help you manage your finances effectively with convenience and security.</p>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h3>Checking Accounts</h3>
+                        <p>No monthly fees with direct deposit. Free online banking and bill pay included.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Savings Accounts</h3>
+                        <p>High-yield savings options with competitive interest rates to grow your money.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Certificates of Deposit</h3>
+                        <p>Secure investments with guaranteed returns for terms from 6 months to 5 years.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h2>Business Banking</h2>
+                <p>Tailored solutions for businesses of all sizes, from startups to established corporations.</p>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h3>Business Checking</h3>
+                        <p>Manage cash flow with our business checking accounts and merchant services.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Business Loans</h3>
+                        <p>Financing options for expansion, equipment, and working capital needs.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Treasury Management</h3>
+                        <p>Advanced cash management solutions for larger businesses.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loans Page (Hidden by Default) -->
+    <div id="loansPage" class="page-content hidden">
+        <div class="container">
+            <div class="page-header">
+                <h1>Loan Services</h1>
+                <p>Flexible lending options with competitive rates and personalized service</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>Mortgage Loans</h2>
+                <p>Make your dream home a reality with our flexible mortgage options and expert guidance.</p>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h3>Fixed-Rate Mortgages</h3>
+                        <p>Stable monthly payments with rates locked in for the life of your loan.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Adjustable-Rate Mortgages</h3>
+                        <p>Lower initial rates that adjust periodically after an initial fixed period.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>FHA & VA Loans</h3>
+                        <p>Government-backed loans with lower down payment requirements.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h2>Personal & Auto Loans</h2>
+                <p>Financing for life's important purchases with competitive rates and flexible terms.</p>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h3>Auto Loans</h3>
+                        <p>New and used car financing with pre-approval available.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Personal Loans</h3>
+                        <p>Funds for debt consolidation, home improvement, or major purchases.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Home Equity Lines</h3>
+                        <p>Access the equity in your home for major expenses or investments.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards Page (Hidden by Default) -->
+    <div id="cardsPage" class="page-content hidden">
+        <div class="container">
+            <div class="page-header">
+                <h1>Credit & Debit Cards</h1>
+                <p>Smart card options with rewards, security, and benefits tailored to your lifestyle</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>Credit Cards</h2>
+                <p>Choose from our selection of credit cards designed to fit your financial needs and lifestyle.</p>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h3>CSB Rewards Card</h3>
+                        <p>Earn 2x points on dining and groceries, 1x on all other purchases. No annual fee.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>CSB Cash Back Card</h3>
+                        <p>Get 1.5% cash back on all purchases with no categories to track or rotate.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>CSB Travel Card</h3>
+                        <p>Premium travel benefits including airport lounge access and travel insurance.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h2>Debit Cards & Digital Payments</h2>
+                <p>Secure and convenient ways to access your money and make payments.</p>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h3>Contactless Debit Cards</h3>
+                        <p>Tap to pay securely with our contactless debit cards.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Digital Wallet</h3>
+                        <p>Add your CSB cards to Apple Pay, Google Pay, or Samsung Pay.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Virtual Cards</h3>
+                        <p>Generate virtual card numbers for secure online shopping.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Community Page (Hidden by Default) -->
+    <div id="communityPage" class="page-content hidden">
+        <div class="container">
+            <div class="page-header">
+                <h1>Community Programs</h1>
+                <p>How we're investing in the communities we serve</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>CSB Foundation</h2>
+                <p>Through the CSB Foundation, we support initiatives that promote financial literacy, affordable housing, and small business development in our communities.</p>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h3>Financial Literacy Workshops</h3>
+                        <p>Free workshops on budgeting, saving, investing, and credit management.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Small Business Grants</h3>
+                        <p>Annual grants to local small businesses and entrepreneurs.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Affordable Housing Initiative</h3>
+                        <p>Partnerships with local organizations to increase affordable housing options.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h2>Volunteer & Giving Programs</h2>
+                <p>Our employees and customers are actively involved in giving back to our communities.</p>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h3>Employee Volunteer Time</h3>
+                        <p>CSB employees receive paid time off to volunteer with local organizations.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Community Matching Gifts</h3>
+                        <p>CSB matches employee donations to qualified non-profits dollar for dollar.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3>Annual Food & Toy Drives</h3>
+                        <p>Year-round collection drives to support local families in need.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Page (Hidden by Default) -->
+    <div id="contactPage" class="page-content hidden">
+        <div class="container">
+            <div class="page-header">
+                <h1>Contact Us</h1>
+                <p>Get in touch with Community Service Bank - we're here to help</p>
+            </div>
+            
+            <div class="content-card">
+                <h2>Customer Service</h2>
+                <p>Our customer service team is available to assist you with all your banking needs.</p>
+                
+                <div style="margin-top: 30px;">
+                    <h3 style="color: var(--navy-blue); margin-bottom: 15px;">Contact Information</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div>
+                            <h4 style="color: var(--sky-blue); margin-bottom: 10px;"><i class="fas fa-phone-alt"></i> Phone</h4>
+                            <p><strong>General Inquiries:</strong> (800) 555-CSBNK (2726)</p>
+                            <p><strong>Lost or Stolen Cards:</strong> (800) 555-EMERG (3637)</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--sky-blue); margin-bottom: 10px;"><i class="fas fa-envelope"></i> Email</h4>
+                            <p><strong>Customer Service:</strong> service@communityservicebank.com</p>
+                            <p><strong>Account Inquiries:</strong> accounts@communityservicebank.com</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--sky-blue); margin-bottom: 10px;"><i class="fas fa-clock"></i> Hours</h4>
+                            <p><strong>Phone Support:</strong> Mon-Fri: 8am-8pm, Sat: 9am-5pm</p>
+                            <p><strong>Email Support:</strong> 24/7 response within 24 hours</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h2>Visit Our Main Office</h2>
+                <p>We welcome you to visit our main office for personalized banking services.</p>
+                
+                <div style="margin-top: 30px;">
+                    <div style="background-color: var(--light-blue); padding: 25px; border-radius: 8px; border-left: 4px solid var(--sky-blue);">
+                        <h4 style="color: var(--navy-blue); margin-bottom: 15px;">Community Service Bank Headquarters</h4>
+                        <p><i class="fas fa-map-marker-alt" style="color: var(--sky-blue); margin-right: 10px;"></i> 123 Community Drive, Financial District, Your City, ST 12345</p>
+                        <p><i class="fas fa-phone" style="color: var(--sky-blue); margin-right: 10px;"></i> (555) 123-4567</p>
+                        <p><i class="fas fa-clock" style="color: var(--sky-blue); margin-right: 10px;"></i> Monday-Friday: 9:00 AM - 6:00 PM<br>Saturday: 9:00 AM - 2:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>Community Service Bank</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 20px;">Banking with purpose for a better tomorrow.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#" class="footer-nav" data-page="banking">Personal Banking</a></li>
+                        <li><a href="#" class="footer-nav" data-page="loans">Loan Services</a></li>
+                        <li><a href="#" class="footer-nav" data-page="cards">Credit Cards</a></li>
+                        <li><a href="#" class="footer-nav" data-page="community">Community Programs</a></li>
+                        <li><a href="#" class="footer-nav" data-page="contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Community</h3>
+                    <ul>
+                        <li><a href="#" class="footer-nav" data-page="community">CSB Foundation</a></li>
+                        <li><a href="#" class="footer-nav" data-page="community">Financial Literacy Programs</a></li>
+                        <li><a href="#" class="footer-nav" data-page="community">Local Grants</a></li>
+                        <li><a href="#" class="footer-nav" data-page="community">Volunteer Opportunities</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i> 123 Community Drive, Your City</li>
+                        <li><i class="fas fa-phone" style="margin-right: 10px;"></i> (800) 555-CSBNK</li>
+                        <li><i class="fas fa-envelope" style="margin-right: 10px;"></i> info@communityservicebank.com</li>
+                        <li><i class="fas fa-clock" style="margin-right: 10px;"></i> Mon-Fri: 9am-6pm, Sat: 9am-2pm</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Community Service Bank. All rights reserved. Member FDIC. Equal Housing Lender.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Secure credentials - These are not displayed to users
+        // Only these exact credentials will work
+        const VALID_CREDENTIALS = {
+            username: "csb-85327120838",
+            password: "KbTcftP4NAwkAQ7fZVTb"
+        };
+        
+        // DOM Elements
+        const loginButton = document.getElementById('loginButton');
+        const registerButton = document.getElementById('registerButton');
+        const homeLink = document.getElementById('homeLink');
+        const heroRegisterBtn = document.getElementById('heroRegisterBtn');
+        const signupLink = document.getElementById('signupLink');
+        const togglePassword = document.getElementById('togglePassword');
+        const loginForm = document.getElementById('loginForm');
+        const loginMessage = document.getElementById('loginMessage');
+        const accountModal = document.getElementById('accountModal');
+        const modalClose = document.getElementById('modalClose');
+        
+        // Navigation elements
+        const navHome = document.getElementById('navHome');
+        const navBanking = document.getElementById('navBanking');
+        const navLoans = document.getElementById('navLoans');
+        const navCards = document.getElementById('navCards');
+        const navCommunity = document.getElementById('navCommunity');
+        const navContact = document.getElementById('navContact');
+        
+        // Page containers
+        const homePage = document.getElementById('homePage');
+        const loginPage = document.getElementById('loginPage');
+        const bankingPage = document.getElementById('bankingPage');
+        const loansPage = document.getElementById('loansPage');
+        const cardsPage = document.getElementById('cardsPage');
+        const communityPage = document.getElementById('communityPage');
+        const contactPage = document.getElementById('contactPage');
+        
+        // All navigation links
+        const navLinks = [navHome, navBanking, navLoans, navCards, navCommunity, navContact];
+        const pages = {
+            'home': homePage,
+            'login': loginPage,
+            'banking': bankingPage,
+            'loans': loansPage,
+            'cards': cardsPage,
+            'community': communityPage,
+            'contact': contactPage
+        };
+        
+        // Current active page
+        let currentPage = 'home';
+        
+        // Function to show account creation modal
+        function showAccountModal() {
+            accountModal.style.display = 'flex';
+        }
+        
+        // Function to hide account creation modal
+        function hideAccountModal() {
+            accountModal.style.display = 'none';
+        }
+        
+        // Function to show a specific page
+        function showPage(pageId) {
+            // Hide all pages
+            Object.values(pages).forEach(page => {
+                if (page) page.classList.add('hidden');
+            });
+            
+            // Show the selected page
+            if (pages[pageId]) {
+                pages[pageId].classList.remove('hidden');
+                currentPage = pageId;
+            }
+            
+            // Update navigation active state
+            updateNavActiveState(pageId);
+        }
+        
+        // Function to update navigation active state
+        function updateNavActiveState(pageId) {
+            // Remove active class from all nav links
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to appropriate nav link
+            switch(pageId) {
+                case 'home':
+                    navHome.classList.add('active');
+                    break;
+                case 'banking':
+                    navBanking.classList.add('active');
+                    break;
+                case 'loans':
+                    navLoans.classList.add('active');
+                    break;
+                case 'cards':
+                    navCards.classList.add('active');
+                    break;
+                case 'community':
+                    navCommunity.classList.add('active');
+                    break;
+                case 'contact':
+                    navContact.classList.add('active');
+                    break;
+            }
+        }
+        
+        // Function to show login message
+        function showLoginMessage(message, type) {
+            loginMessage.textContent = message;
+            loginMessage.className = 'message';
+            loginMessage.classList.add(type === 'success' ? 'success-message' : 'error-message');
+            loginMessage.style.display = 'block';
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                loginMessage.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Function to validate credentials
+        function validateCredentials(username, password) {
+            // Exact match required for both username and password
+            // Only the provided credentials will work
+            return username === VALID_CREDENTIALS.username && password === VALID_CREDENTIALS.password;
+        }
+        
+        // Function to redirect to balance page
+        function redirectToBalancePage() {
+            // Show success message
+            showLoginMessage('Login successful! Redirecting to your account dashboard...', 'success');
+            
+            // Store login state in sessionStorage
+            sessionStorage.setItem('csb_logged_in', 'true');
+            sessionStorage.setItem('csb_username', VALID_CREDENTIALS.username);
+            
+            // Initialize balance if not exists
+            if (!localStorage.getItem('csb_balance')) {
+                localStorage.setItem('csb_balance', '1000.00');
+                localStorage.setItem('csb_transactions', JSON.stringify([{
+                    id: 'TX-' + Date.now(),
+                    type: 'deposit',
+                    amount: 1000.00,
+                    description: 'Initial Deposit',
+                    date: new Date().toLocaleString()
+                }]));
+            }
+            
+            // Redirect to balance.html after 1.5 seconds
+            setTimeout(() => {
+                window.location.href = 'balance.html';
+            }, 1500);
+        }
+        
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set home page as default
+            showPage('home');
+            
+            // Check if already logged in
+            if (sessionStorage.getItem('csb_logged_in') === 'true') {
+                // User is already logged in, show appropriate message
+                console.log('User already logged in');
+            }
+            
+            // Login button click
+            loginButton.addEventListener('click', function() {
+                showPage('login');
+            });
+            
+            // Register button click - shows account modal
+            registerButton.addEventListener('click', function() {
+                showAccountModal();
+            });
+            
+            // Hero register button - shows account modal
+            heroRegisterBtn.addEventListener('click', function() {
+                showAccountModal();
+            });
+            
+            // Home logo click
+            homeLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('home');
+            });
+            
+            // Sign up link in login page - shows account modal
+            signupLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showAccountModal();
+            });
+            
+            // Close modal button
+            modalClose.addEventListener('click', function() {
+                hideAccountModal();
+            });
+            
+            // Close modal when clicking outside
+            accountModal.addEventListener('click', function(e) {
+                if (e.target === accountModal) {
+                    hideAccountModal();
+                }
+            });
+            
+            // Toggle password visibility
+            togglePassword.addEventListener('click', function() {
+                const passwordInput = document.getElementById('password');
+                const icon = this.querySelector('i');
+                
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+            
+            // Login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+                
+                // Simple validation
+                if (!username || !password) {
+                    showLoginMessage('Please enter both username and password.', 'error');
+                    return;
+                }
+                
+                // Check credentials
+                if (validateCredentials(username, password)) {
+                    // Correct credentials - redirect to balance page
+                    redirectToBalancePage();
+                } else {
+                    // Incorrect credentials
+                    showLoginMessage('Incorrect username or password. Please try again.', 'error');
+                    
+                    // Clear password field for security
+                    document.getElementById('password').value = '';
+                    
+                    // Add shake animation to form
+                    this.classList.add('shake');
+                    setTimeout(() => {
+                        this.classList.remove('shake');
+                    }, 500);
+                }
+            });
+            
+            // Navigation clicks
+            navHome.addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('home');
+            });
+            
+            navBanking.addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('banking');
+            });
+            
+            navLoans.addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('loans');
+            });
+            
+            navCards.addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('cards');
+            });
+            
+            navCommunity.addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('community');
+            });
+            
+            navContact.addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('contact');
+            });
+            
+            // Footer navigation links
+            document.querySelectorAll('.footer-nav').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    showPage(page);
+                });
+            });
+            
+            // Forgot password link
+            document.querySelector('.forgot-password').addEventListener('click', function(e) {
+                e.preventDefault();
+                showLoginMessage('For security reasons, please contact our customer service at (800) 555-CSBNK to reset your password.', 'error');
+            });
+            
+            // Add shake animation CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+                .shake {
+                    animation: shake 0.5s ease-in-out;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
