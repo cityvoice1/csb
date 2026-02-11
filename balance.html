@@ -1,0 +1,2302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Dashboard - Community Service Bank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --navy-blue: #002B5C;
+            --sky-blue: #4A90E2;
+            --light-blue: #E8F4FD;
+            --white: #FFFFFF;
+            --gray-light: #F5F7FA;
+            --gray: #6C757D;
+            --success: #28a745;
+            --error: #dc3545;
+            --warning: #ffc107;
+            --purple: #6f42c1;
+            --teal: #20c997;
+            --pink: #e83e8c;
+            --orange: #fd7e14;
+            --indigo: #6610f2;
+        }
+        
+        body {
+            background-color: var(--light-blue);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .dashboard-header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--navy-blue), var(--sky-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            overflow: hidden; /* Ensures image fits within circle */
+        }
+        
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Makes image cover the circle properly */
+            border-radius: 50%;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy-blue);
+        }
+        
+        .logo-text span {
+            color: var(--sky-blue);
+        }
+        
+        .logout-btn {
+            background-color: var(--navy-blue);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--sky-blue);
+            transform: translateY(-2px);
+        }
+        
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(135deg, var(--navy-blue) 0%, var(--sky-blue) 100%);
+            border-radius: 15px;
+            padding: 40px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 43, 92, 0.2);
+        }
+        
+        .welcome-title {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .welcome-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        /* Dashboard Content */
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 992px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Account Summary Card */
+        .summary-card {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid var(--sky-blue);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .card-title {
+            color: var(--navy-blue);
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--sky-blue);
+            font-size: 22px;
+        }
+        
+        /* Wire Transfer Buttons */
+        .transfer-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .transfer-btn {
+            flex: 1;
+            background: linear-gradient(135deg, var(--navy-blue) 0%, var(--sky-blue) 100%);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+        }
+        
+        .transfer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 43, 92, 0.3);
+        }
+        
+        .transfer-btn.local {
+            background: linear-gradient(135deg, var(--teal) 0%, #17a589 100%);
+        }
+        
+        .transfer-btn.international {
+            background: linear-gradient(135deg, var(--purple) 0%, var(--indigo) 100%);
+        }
+        
+        .transfer-btn i {
+            font-size: 18px;
+        }
+        
+        /* Account Details */
+        .account-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .account-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .transfer-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            color: var(--navy-blue);
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .balance-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .balance-label {
+            color: var(--gray);
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .balance-amount {
+            color: var(--navy-blue);
+            font-size: 36px;
+            font-weight: 700;
+        }
+        
+        /* Transactions Card */
+        .transactions-card {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid var(--teal);
+        }
+        
+        .transaction-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--gray-light);
+            padding-bottom: 15px;
+        }
+        
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--gray);
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background-color: var(--light-blue);
+            color: var(--navy-blue);
+        }
+        
+        .tab-btn:hover:not(.active) {
+            color: var(--sky-blue);
+        }
+        
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--gray-light);
+            transition: transform 0.2s ease;
+        }
+        
+        .transaction-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .transaction-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+        }
+        
+        .incoming .transaction-icon {
+            background: linear-gradient(135deg, var(--success), var(--teal));
+        }
+        
+        .outgoing .transaction-icon {
+            background: linear-gradient(135deg, var(--error), var(--pink));
+        }
+        
+        .transaction-details h4 {
+            color: var(--navy-blue);
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .transaction-details p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .transaction-amount {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .incoming .transaction-amount {
+            color: var(--success);
+        }
+        
+        .outgoing .transaction-amount {
+            color: var(--error);
+        }
+        
+        /* Recent Activity */
+        .activity-card {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid var(--purple);
+            margin-bottom: 30px;
+        }
+        
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--gray-light);
+        }
+        
+        .activity-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+        }
+        
+        .activity-icon.deposit {
+            background: linear-gradient(135deg, var(--success), var(--teal));
+        }
+        
+        .activity-icon.withdrawal {
+            background: linear-gradient(135deg, var(--error), var(--pink));
+        }
+        
+        .activity-icon.transfer {
+            background: linear-gradient(135deg, var(--warning), var(--orange));
+        }
+        
+        .activity-icon.bill {
+            background: linear-gradient(135deg, var(--purple), var(--indigo));
+        }
+        
+        .activity-icon.interest {
+            background: linear-gradient(135deg, var(--sky-blue), var(--navy-blue));
+        }
+        
+        .activity-details h4 {
+            color: var(--navy-blue);
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .activity-details p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        /* Footer */
+        .dashboard-footer {
+            background-color: var(--navy-blue);
+            color: white;
+            padding: 40px 0 30px;
+            margin-top: 40px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: white;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--sky-blue);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .welcome-section {
+                padding: 30px 20px;
+            }
+            
+            .welcome-title {
+                font-size: 28px;
+            }
+            
+            .summary-card, .transactions-card, .activity-card {
+                padding: 25px 20px;
+            }
+            
+            .card-title {
+                font-size: 22px;
+            }
+            
+            .balance-amount {
+                font-size: 32px;
+            }
+            
+            .transaction-tabs {
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .welcome-title {
+                font-size: 24px;
+            }
+            
+            .card-title {
+                font-size: 20px;
+            }
+            
+            .balance-amount {
+                font-size: 28px;
+            }
+            
+            .transaction-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .transaction-amount {
+                align-self: flex-end;
+            }
+        }
+        
+        /* Modal Styles for Wire Transfers */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal h3 {
+            color: var(--navy-blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal p {
+            color: var(--gray);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .modal-close {
+            background-color: var(--navy-blue);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        .modal-close:hover {
+            background-color: var(--sky-blue);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--navy-blue);
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--sky-blue);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .modal-footer button {
+            flex: 1;
+        }
+        
+        .transfer-fee-notice {
+            background-color: var(--light-blue);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .close-modal-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--gray);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .close-modal-btn:hover {
+            background-color: var(--gray-light);
+        }
+        
+        .form-section-title {
+            color: var(--navy-blue);
+            font-size: 18px;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-blue);
+        }
+        
+        .currency-input {
+            position: relative;
+        }
+        
+        .currency-input .form-control {
+            padding-left: 40px;
+        }
+        
+        .currency-symbol {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-weight: 600;
+        }
+        
+        .modal.local-transfer .modal {
+            border-top: 5px solid var(--teal);
+        }
+        
+        .modal.international-transfer .modal {
+            border-top: 5px solid var(--purple);
+        }
+        
+        .error-message {
+            color: var(--error);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .form-control.error {
+            border-color: var(--error);
+        }
+        
+        .transaction-id-note {
+            background-color: var(--light-blue);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 14px;
+            border-left: 4px solid var(--sky-blue);
+        }
+        
+        .transaction-id-note p {
+            margin-bottom: 10px;
+        }
+        
+        .transaction-id-note code {
+            background-color: var(--navy-blue);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        /* Transaction ID Verification Modal */
+        .transaction-id-modal .modal {
+            max-width: 500px;
+            border-top: 5px solid var(--success);
+        }
+        
+        .transaction-id-modal h3 {
+            color: var(--success);
+        }
+        
+        .verification-status {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .verification-status.success {
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 2px solid var(--success);
+            color: var(--success);
+            display: block;
+        }
+        
+        .verification-status.error {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 2px solid var(--error);
+            color: var(--error);
+            display: block;
+        }
+        
+        .verification-status i {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .click-to-complete {
+            background-color: var(--light-blue);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            text-align: center;
+            font-style: italic;
+            color: var(--gray);
+        }
+    </style>
+</head>
+<body>
+    <!-- Transaction ID Verification Modal -->
+    <div id="transactionIdModal" class="modal-overlay transaction-id-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-shield-alt"></i> Transaction ID Verification</h3>
+                <button class="close-modal-btn" id="closeTransactionIdModal">&times;</button>
+            </div>
+            
+            <div class="transaction-id-note">
+                <p><strong>IMPORTANT:</strong> Please enter your transaction ID or request for new ID here,account@communityservicebank.com.</p>
+                <p></p>
+            </div>
+            
+            <form id="transactionIdForm">
+                <div class="form-group">
+                    <label for="transactionIdInput">Transaction ID *</label>
+                    <input type="password" id="transactionIdInput" class="form-control" placeholder="Enter your transaction ID" required>
+                    <div class="error-message" id="transactionIdError">Invalid Transaction ID. Please enter the correct transaction ID.</div>
+                </div>
+                
+                <div class="verification-status" id="verificationStatus">
+                    <i class="fas fa-check-circle"></i>
+                    <h4>Transaction ID Verified!</h4>
+                    <p>Wire transfer successful. Please allow 3 to 5 business days to have your account funded.</p>
+                </div>
+                
+                <div class="click-to-complete">
+                    Click to complete transaction
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close" style="background-color: var(--success);">
+                        <i class="fas fa-check"></i> Verify & Complete
+                    </button>
+                    <button type="button" class="modal-close" id="cancelTransactionIdModal" style="background-color: var(--gray);">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Local Wire Transfer Modal -->
+    <div id="localWireTransferModal" class="modal-overlay local-transfer">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-university"></i> Local Wire Transfer</h3>
+                <button class="close-modal-btn" id="closeLocalModal">&times;</button>
+            </div>
+            
+            <div class="transfer-fee-notice">
+                <i class="fas fa-info-circle"></i> <strong>Transfer Information:</strong> 
+                Local wire transfers within the country typically take 1-2 business days to complete. A fee of $15 may apply.
+            </div>
+            
+            <form id="localWireTransferForm">
+                <div class="form-section-title">Recipient Information</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="localRecipientName">Recipient Full Name *</label>
+                        <input type="text" id="localRecipientName" class="form-control" placeholder="Enter recipient's full legal name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="localRecipientAccount">Recipient Account Number *</label>
+                        <input type="text" id="localRecipientAccount" class="form-control" placeholder="Enter account number" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="localBankName">Bank Name *</label>
+                        <input type="text" id="localBankName" class="form-control" placeholder="Enter bank name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="localRoutingNumber">Routing Number (ABA) *</label>
+                        <input type="text" id="localRoutingNumber" class="form-control" placeholder="9-digit routing number" pattern="[0-9]{9}" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="localBankAddress">Bank Address</label>
+                    <input type="text" id="localBankAddress" class="form-control" placeholder="Street address, City, State, ZIP">
+                </div>
+                
+                <div class="form-section-title">Transfer Details</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="localTransferAmount">Amount *</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="localTransferAmount" class="form-control" placeholder="0.00" min="1" step="0.01" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="localTransferDate">Transfer Date *</label>
+                        <input type="date" id="localTransferDate" class="form-control" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="localTransferReason">Reason for Transfer *</label>
+                    <select id="localTransferReason" class="form-control" required>
+                        <option value="">Select a reason</option>
+                        <option value="family_support">Family Support</option>
+                        <option value="business_payment">Business Payment</option>
+                        <option value="education">Education Expenses</option>
+                        <option value="real_estate">Real Estate Transaction</option>
+                        <option value="investment">Investment</option>
+                        <option value="loan_repayment">Loan Repayment</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="localNotes">Additional Notes (Optional)</label>
+                    <textarea id="localNotes" class="form-control" rows="3" placeholder="Any additional information about this transfer"></textarea>
+                </div>
+                
+                <div class="form-section-title">Confirmation</div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="localTerms" required>
+                        I confirm that all information provided is accurate and I authorize Community Service Bank to debit my account for the specified amount.
+                    </label>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close" style="background-color: var(--teal);">
+                        <i class="fas fa-paper-plane"></i> Send Wire Transfer
+                    </button>
+                    <button type="button" class="modal-close" id="cancelLocalModal" style="background-color: var(--gray);">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- International Wire Transfer Modal -->
+    <div id="internationalWireTransferModal" class="modal-overlay international-transfer">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-globe-americas"></i> International Wire Transfer</h3>
+                <button class="close-modal-btn" id="closeInternationalModal">&times;</button>
+            </div>
+            
+            <div class="transfer-fee-notice">
+                <i class="fas fa-exclamation-triangle"></i> <strong>Important Notice:</strong> 
+                International wire transfers may take 3-5 business days and include a $35 fee. Additional fees may be charged by intermediary banks.
+            </div>
+            
+            <form id="internationalWireTransferForm">
+                <div class="form-section-title">Recipient Information</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="intRecipientName">Recipient Full Name *</label>
+                        <input type="text" id="intRecipientName" class="form-control" placeholder="Recipient's full legal name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="intRecipientAccount">Recipient Account Number *</label>
+                        <input type="text" id="intRecipientAccount" class="form-control" placeholder="Recipient's account number" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="intRecipientAddress">Recipient Address *</label>
+                        <input type="text" id="intRecipientAddress" class="form-control" placeholder="Street, City, Country" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="intRecipientPhone">Recipient Phone Number</label>
+                        <input type="tel" id="intRecipientPhone" class="form-control" placeholder="+[country code][number]">
+                    </div>
+                </div>
+                
+                <div class="form-section-title">Bank Information</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="intBankName">Bank Name *</label>
+                        <input type="text" id="intBankName" class="form-control" placeholder="Recipient bank name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="intBankCountry">Bank Country *</label>
+                        <select id="intBankCountry" class="form-control" required>
+                            <option value="">Select Country</option>
+                            <option value="AF">Afghanistan</option>
+<option value="AL">Albania</option>
+<option value="DZ">Algeria</option>
+<option value="AS">American Samoa</option>
+<option value="AD">Andorra</option>
+<option value="AO">Angola</option>
+<option value="AI">Anguilla</option>
+<option value="AG">Antigua & Barbuda</option>
+<option value="AR">Argentina</option>
+<option value="AM">Armenia</option>
+<option value="AW">Aruba</option>
+<option value="AU">Australia</option>
+<option value="AT">Austria</option>
+<option value="AZ">Azerbaijan</option>
+<option value="BS">Bahamas</option>
+<option value="BH">Bahrain</option>
+<option value="BD">Bangladesh</option>
+<option value="BB">Barbados</option>
+<option value="BY">Belarus</option>
+<option value="BE">Belgium</option>
+<option value="BZ">Belize</option>
+<option value="BJ">Benin</option>
+<option value="BM">Bermuda</option>
+<option value="BT">Bhutan</option>
+<option value="BO">Bolivia</option>
+<option value="BQ">Bonaire</option>
+<option value="BA">Bosnia & Herzegovina</option>
+<option value="BW">Botswana</option>
+<option value="BR">Brazil</option>
+<option value="IO">British Indian Ocean Territory</option>
+<option value="VG">British Virgin Islands</option>
+<option value="BN">Brunei</option>
+<option value="BG">Bulgaria</option>
+<option value="BF">Burkina Faso</option>
+<option value="BI">Burundi</option>
+<option value="CV">Cabo Verde</option>
+<option value="KH">Cambodia</option>
+<option value="CM">Cameroon</option>
+<option value="CA">Canada</option>
+<option value="KY">Cayman Islands</option>
+<option value="CF">Central African Republic</option>
+<option value="TD">Chad</option>
+<option value="CL">Chile</option>
+<option value="CN">China</option>
+<option value="CX">Christmas Island</option>
+<option value="CC">Cocos (Keeling) Islands</option>
+<option value="CO">Colombia</option>
+<option value="KM">Comoros</option>
+<option value="CK">Cook Islands</option>
+<option value="CR">Costa Rica</option>
+<option value="HR">Croatia</option>
+<option value="CU">Cuba</option>
+<option value="CW">Curaçao</option>
+<option value="CY">Cyprus</option>
+<option value="CZ">Czech Republic</option>
+<option value="CD">Democratic Republic of the Congo</option>
+<option value="DK">Denmark</option>
+<option value="DJ">Djibouti</option>
+<option value="DM">Dominica</option>
+<option value="DO">Dominican Republic</option>
+<option value="EC">Ecuador</option>
+<option value="EG">Egypt</option>
+<option value="SV">El Salvador</option>
+<option value="GQ">Equatorial Guinea</option>
+<option value="ER">Eritrea</option>
+<option value="EE">Estonia</option>
+<option value="SZ">Eswatini</option>
+<option value="ET">Ethiopia</option>
+<option value="FK">Falkland Islands</option>
+<option value="FO">Faroe Islands</option>
+<option value="FJ">Fiji</option>
+<option value="FI">Finland</option>
+<option value="FR">France</option>
+<option value="GF">French Guiana</option>
+<option value="PF">French Polynesia</option>
+<option value="GA">Gabon</option>
+<option value="GM">Gambia</option>
+<option value="GE">Georgia</option>
+<option value="DE">Germany</option>
+<option value="GH">Ghana</option>
+<option value="GI">Gibraltar</option>
+<option value="GR">Greece</option>
+<option value="GL">Greenland</option>
+<option value="GD">Grenada</option>
+<option value="GP">Guadeloupe</option>
+<option value="GU">Guam</option>
+<option value="GT">Guatemala</option>
+<option value="GG">Guernsey</option>
+<option value="GN">Guinea</option>
+<option value="GW">Guinea-Bissau</option>
+<option value="GY">Guyana</option>
+<option value="HT">Haiti</option>
+<option value="HN">Honduras</option>
+<option value="HK">Hong Kong</option>
+<option value="HU">Hungary</option>
+<option value="IS">Iceland</option>
+<option value="IN">India</option>
+<option value="ID">Indonesia</option>
+<option value="IR">Iran</option>
+<option value="IQ">Iraq</option>
+<option value="IE">Ireland</option>
+<option value="IM">Isle of Man</option>
+<option value="IL">Israel</option>
+<option value="IT">Italy</option>
+<option value="CI">Ivory Coast</option>
+<option value="JM">Jamaica</option>
+<option value="JP">Japan</option>
+<option value="JE">Jersey</option>
+<option value="JO">Jordan</option>
+<option value="KZ">Kazakhstan</option>
+<option value="KE">Kenya</option>
+<option value="KI">Kiribati</option>
+<option value="XK">Kosovo</option>
+<option value="KW">Kuwait</option>
+<option value="KG">Kyrgyzstan</option>
+<option value="LA">Laos</option>
+<option value="LV">Latvia</option>
+<option value="LB">Lebanon</option>
+<option value="LS">Lesotho</option>
+<option value="LR">Liberia</option>
+<option value="LY">Libya</option>
+<option value="LI">Liechtenstein</option>
+<option value="LT">Lithuania</option>
+<option value="LU">Luxembourg</option>
+<option value="MO">Macau</option>
+<option value="MG">Madagascar</option>
+<option value="MW">Malawi</option>
+<option value="MY">Malaysia</option>
+<option value="MV">Maldives</option>
+<option value="ML">Mali</option>
+<option value="MT">Malta</option>
+<option value="MH">Marshall Islands</option>
+<option value="MQ">Martinique</option>
+<option value="MR">Mauritania</option>
+<option value="MU">Mauritius</option>
+<option value="YT">Mayotte</option>
+<option value="MX">Mexico</option>
+<option value="FM">Micronesia</option>
+<option value="MD">Moldova</option>
+<option value="MC">Monaco</option>
+<option value="MN">Mongolia</option>
+<option value="ME">Montenegro</option>
+<option value="MS">Montserrat</option>
+<option value="MA">Morocco</option>
+<option value="MZ">Mozambique</option>
+<option value="MM">Myanmar (Burma)</option>
+<option value="NA">Namibia</option>
+<option value="NR">Nauru</option>
+<option value="NP">Nepal</option>
+<option value="NL">Netherlands</option>
+<option value="NC">New Caledonia</option>
+<option value="NZ">New Zealand</option>
+<option value="NI">Nicaragua</option>
+<option value="NE">Niger</option>
+<option value="NG">Nigeria</option>
+<option value="NU">Niue</option>
+<option value="NF">Norfolk Island</option>
+<option value="KP">North Korea</option>
+<option value="MK">North Macedonia</option>
+<option value="MP">Northern Mariana Islands</option>
+<option value="NO">Norway</option>
+<option value="OM">Oman</option>
+<option value="PK">Pakistan</option>
+<option value="PW">Palau</option>
+<option value="PS">Palestine</option>
+<option value="PA">Panama</option>
+<option value="PG">Papua New Guinea</option>
+<option value="PY">Paraguay</option>
+<option value="PE">Peru</option>
+<option value="PH">Philippines</option>
+<option value="PL">Poland</option>
+<option value="PT">Portugal</option>
+<option value="PR">Puerto Rico</option>
+<option value="QA">Qatar</option>
+<option value="CG">Republic of the Congo</option>
+<option value="RE">Réunion</option>
+<option value="RO">Romania</option>
+<option value="RU">Russia</option>
+<option value="RW">Rwanda</option>
+<option value="WS">Samoa</option>
+<option value="SM">San Marino</option>
+<option value="ST">São Tomé & Príncipe</option>
+<option value="SA">Saudi Arabia</option>
+<option value="SN">Senegal</option>
+<option value="RS">Serbia</option>
+<option value="SC">Seychelles</option>
+<option value="SL">Sierra Leone</option>
+<option value="SG">Singapore</option>
+<option value="SX">Sint Maarten</option>
+<option value="SK">Slovakia</option>
+<option value="SI">Slovenia</option>
+<option value="SB">Solomon Islands</option>
+<option value="SO">Somalia</option>
+<option value="ZA">South Africa</option>
+<option value="KR">South Korea</option>
+<option value="SS">South Sudan</option>
+<option value="ES">Spain</option>
+<option value="LK">Sri Lanka</option>
+<option value="BL">St. Barthélemy</option>
+<option value="SH">St. Helena</option>
+<option value="KN">St. Kitts & Nevis</option>
+<option value="LC">St. Lucia</option>
+<option value="MF">St. Martin</option>
+<option value="PM">St. Pierre & Miquelon</option>
+<option value="VC">St. Vincent & Grenadines</option>
+<option value="SD">Sudan</option>
+<option value="SR">Suriname</option>
+<option value="SE">Sweden</option>
+<option value="CH">Switzerland</option>
+<option value="SY">Syria</option>
+<option value="TW">Taiwan</option>
+<option value="TJ">Tajikistan</option>
+<option value="TZ">Tanzania</option>
+<option value="TH">Thailand</option>
+<option value="TL">Timor-Leste</option>
+<option value="TG">Togo</option>
+<option value="TK">Tokelau</option>
+<option value="TO">Tonga</option>
+<option value="TT">Trinidad & Tobago</option>
+<option value="TN">Tunisia</option>
+<option value="TR">Turkey</option>
+<option value="TM">Turkmenistan</option>
+<option value="TC">Turks & Caicos Islands</option>
+<option value="TV">Tuvalu</option>
+<option value="UG">Uganda</option>
+<option value="UA">Ukraine</option>
+<option value="AE">United Arab Emirates</option>
+<option value="GB">United Kingdom</option>
+<option value="US">United States</option>
+<option value="UY">Uruguay</option>
+<option value="VI">U.S. Virgin Islands</option>
+<option value="UZ">Uzbekistan</option>
+<option value="VU">Vanuatu</option>
+<option value="VA">Vatican City</option>
+<option value="VE">Venezuela</option>
+<option value="VN">Vietnam</option>
+<option value="WF">Wallis & Futuna</option>
+<option value="EH">Western Sahara</option>
+<option value="YE">Yemen</option>
+<option value="ZM">Zambia</option>
+<option value="ZW">Zimbabwe</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="intBankAddress">Bank Address *</label>
+                        <input type="text" id="intBankAddress" class="form-control" placeholder="Bank's complete address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="intBankCity">Bank City *</label>
+                        <input type="text" id="intBankCity" class="form-control" placeholder="Bank's city" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="intSwiftCode">SWIFT/BIC Code *</label>
+                        <input type="text" id="intSwiftCode" class="form-control" placeholder="8 or 11 character code" pattern="[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="intIban">IBAN (if applicable)</label>
+                        <input type="text" id="intIban" class="form-control" placeholder="International Bank Account Number">
+                    </div>
+                </div>
+                
+                <div class="form-section-title">Transfer Details</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="intTransferAmount">Amount *</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="intTransferAmount" class="form-control" placeholder="0.00" min="1" step="0.01" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="intCurrency">Currency *</label>
+                        <select id="intCurrency" class="form-control" required>
+                            <option value="USD">USD - US Dollar</option>
+                            <option value="EUR">EUR - Euro</option>
+                            <option value="GBP">GBP - British Pound</option>
+                            <option value="CAD">CAD - Canadian Dollar</option>
+                            <option value="AUD">AUD - Australian Dollar</option>
+                            <option value="JPY">JPY - Japanese Yen</option>
+                            <option value="CHF">CHF - Swiss Franc</option>
+                            <option value="CNY">CNY - Chinese Yuan</option>
+                            <option value="INR">INR - Indian Rupee</option>
+                            <option value="MXN">MXN - Mexican Peso</option>
+                            <option value="BRL">BRL - Brazilian Real</option>
+                            <option value="ZAR">ZAR - South African Rand</option>
+                            <option value="RUB">RUB - Russian Ruble</option>
+                            <option value="AED">AED - UAE Dirham</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="intTransferDate">Transfer Date *</label>
+                        <input type="date" id="intTransferDate" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="intTransferType">Transfer Type *</label>
+                        <select id="intTransferType" class="form-control" required>
+                            <option value="">Select Type</option>
+                            <option value="urgent">Urgent Transfer</option>
+                            <option value="standard">Standard Transfer</option>
+                            <option value="economy">Economy Transfer</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="intTransferReason">Purpose of Transfer *</label>
+                    <select id="intTransferReason" class="form-control" required>
+                        <option value="">Select purpose</option>
+                        <option value="family_support">Family Support/Maintenance</option>
+                        <option value="education">Education Fees</option>
+                        <option value="medical">Medical Treatment</option>
+                        <option value="business">Business Transaction</option>
+                        <option value="property">Property Purchase</option>
+                        <option value="investment">Investment</option>
+                        <option value="travel">Travel Expenses</option>
+                        <option value="gift">Gift</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="intPaymentDetails">Payment Details/Reference *</label>
+                    <input type="text" id="intPaymentDetails" class="form-control" placeholder="Details visible to recipient" required>
+                </div>
+                
+                <div class="form-section-title">Regulatory Information</div>
+                
+                <div class="form-group">
+                    <label for="intSourceOfFunds">Source of Funds *</label>
+                    <select id="intSourceOfFunds" class="form-control" required>
+                        <option value="">Select source</option>
+                        <option value="salary">Salary/Employment Income</option>
+                        <option value="savings">Personal Savings</option>
+                        <option value="investment">Investment Proceeds</option>
+                        <option value="business">Business Income</option>
+                        <option value="gift">Gift/Inheritance</option>
+                        <option value="loan">Loan Proceeds</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="intRegulatoryInfo">Additional Regulatory Information</label>
+                    <textarea id="intRegulatoryInfo" class="form-control" rows="2" placeholder="Any additional information required for compliance"></textarea>
+                </div>
+                
+                <div class="form-section-title">Confirmation</div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="intTerms" required>
+                        I understand that international wire transfers are subject to additional fees, exchange rate fluctuations, and regulatory requirements. I confirm all information is accurate.
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="intRegulatoryConsent" required>
+                        I consent to the collection and processing of my information for regulatory compliance purposes.
+                    </label>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close" style="background-color: var(--purple);">
+                        <i class="fas fa-globe"></i> Send International Wire
+                    </button>
+                    <button type="button" class="modal-close" id="cancelInternationalModal" style="background-color: var(--gray);">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="https://i.imgur.com/ESqW2I7.png" alt="Community Service Bank Logo">
+                </div>
+                <div class="logo-text">Community <span>Service Bank</span></div>
+            </div>
+            
+            <button class="logout-btn" id="logoutButton">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1 class="welcome-title">Welcome back, Anthony!</h1>
+            <p class="welcome-subtitle">Here's your account summary and recent activity</p>
+        </section>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Account Summary -->
+            <div class="summary-card">
+                <div class="card-header">
+                    <h2 class="card-title">Account Summary</h2>
+                    <div class="card-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                </div>
+                
+                <div class="account-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Full Name</span>
+                        <span class="detail-value">Anthony Donald Mario</span>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <span class="detail-label">Account Number</span>
+                        <span class="detail-value">CSB-85327120838</span>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <span class="detail-label">Account Type</span>
+                        <span class="detail-value">Premium Savings</span>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <span class="detail-label">Account Created</span>
+                        <span class="detail-value">March 15, 2019</span>
+                    </div>
+                </div>
+                
+                <div class="balance-container">
+                    <div class="balance-label">Current Balance</div>
+                    <div class="balance-amount" id="balanceAmount">$8,871,815.75</div>
+                </div>
+                
+                <!-- Wire Transfer Buttons -->
+                <div class="transfer-buttons">
+                    <button class="transfer-btn local" id="localWireBtn">
+                        <i class="fas fa-university"></i> Local Wire Transfer
+                    </button>
+                    
+                    <button class="transfer-btn international" id="internationalWireBtn">
+                        <i class="fas fa-globe-americas"></i> International Wire Transfer
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="transactions-card">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Transactions</h2>
+                    <div class="card-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                </div>
+                
+                <div class="transaction-tabs">
+                    <button class="tab-btn active" id="allTab">All Transactions</button>
+                    <button class="tab-btn" id="incomingTab">Incoming</button>
+                    <button class="tab-btn" id="outgoingTab">Outgoing</button>
+                </div>
+                
+                <div class="transaction-list" id="transactionList">
+                    <!-- Incoming Transactions (November 2024 - January 2026) -->
+                    <div class="transaction-item incoming">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Year-End Bonus</h4>
+                                <p>From: TechCorp Inc. • Jan 15, 2026</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">+$15,750.00</div>
+                    </div>
+                    
+                    <div class="transaction-item incoming">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Dividend Payout</h4>
+                                <p>Q4 2025 Earnings • Jan 10, 2026</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">+$2,845.60</div>
+                    </div>
+                    
+                    <div class="transaction-item incoming">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-hand-holding-usd"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Consulting Project</h4>
+                                <p>From: Mario Holdings Ltd • Dec 28, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">+$12,500.00</div>
+                    </div>
+                    
+                    <div class="transaction-item incoming">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-money-check-alt"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Tax Refund</h4>
+                                <p>From: IRS • Dec 5, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">+$3,220.00</div>
+                    </div>
+                    
+                    <div class="transaction-item incoming">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Holiday Gift</h4>
+                                <p>From: Anthony Mario Sr. • Nov 30, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">+$2,000.00</div>
+                    </div>
+                    
+                    <div class="transaction-item incoming">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Performance Award</h4>
+                                <p>Annual Sales Bonus • Nov 15, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">+$7,850.00</div>
+                    </div>
+                    
+                    <div class="transaction-item incoming">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Investment Maturity</h4>
+                                <p>5-Year Bond • Oct 3, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">+$25,000.00</div>
+                    </div>
+                    
+                    <div class="transaction-item incoming">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Inheritance Distribution</h4>
+                                <p>Estate of D. Mario • Sep 22, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">+$50,000.00</div>
+                    </div>
+                    
+                    <!-- Outgoing Transactions (November 2024 - January 2026) -->
+                    <div class="transaction-item outgoing">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Mortgage Payment</h4>
+                                <p>To: Community Housing • Jan 14, 2026</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">-$2,350.00</div>
+                    </div>
+                    
+                    <div class="transaction-item outgoing">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Vehicle Lease</h4>
+                                <p>To: AutoFlex Leasing • Jan 12, 2026</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">-$625.00</div>
+                    </div>
+                    
+                    <div class="transaction-item outgoing">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Tuition Payment</h4>
+                                <p>To: University Foundation • Dec 20, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">-$8,450.00</div>
+                    </div>
+                    
+                    <div class="transaction-item outgoing">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-plane"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Holiday Travel</h4>
+                                <p>To: Global Airlines • Dec 10, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">-$3,275.50</div>
+                    </div>
+                    
+                    <div class="transaction-item outgoing">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Charity Donation</h4>
+                                <p>To: Children's Fund • Nov 28, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">-$1,000.00</div>
+                    </div>
+                    
+                    <div class="transaction-item outgoing">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Home Renovation</h4>
+                                <p>To: Mario Construction Co • Nov 8, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">-$12,750.00</div>
+                    </div>
+                    
+                    <div class="transaction-item outgoing">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Tax Payment</h4>
+                                <p>Estimated Quarterly • Oct 18, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">-$5,600.00</div>
+                    </div>
+                    
+                    <div class="transaction-item outgoing">
+                        <div class="transaction-info">
+                            <div class="transaction-icon">
+                                <i class="fas fa-business-time"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Business Investment</h4>
+                                <p>To: Mario Enterprises • Sep 5, 2025</p>
+                            </div>
+                        </div>
+                        <div class="transaction-amount">-$35,000.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-card">
+            <div class="card-header">
+                <h2 class="card-title">Recent Account Activity</h2>
+                <div class="card-icon">
+                    <i class="fas fa-history"></i>
+                </div>
+            </div>
+            
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon deposit">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>Payment Received from Company</h4>
+                        <p>From: TechCorp Inc. • Today, 9:15 AM</p>
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon bill">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>Bill Payment Scheduled</h4>
+                        <p>Mortgage payment scheduled for Feb 1, 2026 • Jan 20, 2026</p>
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon transfer">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>Transfer to Savings</h4>
+                        <p>$2,000 transferred to High-Yield Savings • Jan 18, 2026</p>
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon withdrawal">
+                        <i class="fas fa-atm"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>ATM Withdrawal</h4>
+                        <p>$300 withdrawn from Mario Plaza ATM • Jan 16, 2026</p>
+                    </div>
+                </div>
+                
+                <div class="activity-item">
+                    <div class="activity-icon interest">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>Interest Calculation</h4>
+                        <p>Monthly interest of $712.30 added to account • Jan 10, 2026</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>Community Service Bank</h3>
+                    <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 20px;">Banking with purpose for a better tomorrow.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Account Overview</a></li>
+                        <li><a href="#">Transfer Funds</a></li>
+                        <li><a href="#">Bill Pay</a></li>
+                        <li><a href="#">Statements</a></li>
+                        <li><a href="#">Account Settings</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Contact Customer Service</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Security Center</a></li>
+                        <li><a href="#">Report Fraud</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i> 311 Elm St Suite 270, Cincinnati, OH 45202</li>
+                        <li><i class="fas fa-phone" style="margin-right: 10px;"></i> (800) 821-2680</li>
+                        <li><i class="fas fa-envelope" style="margin-right: 10px;"></i> support@csbank.online</li>
+                        <li><i class="fas fa-clock" style="margin-right: 10px;"></i> 24/7 Online Banking</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Community Service Bank. All rights reserved. Member FDIC. Equal Housing Lender.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const logoutButton = document.getElementById('logoutButton');
+        const allTab = document.getElementById('allTab');
+        const incomingTab = document.getElementById('incomingTab');
+        const outgoingTab = document.getElementById('outgoingTab');
+        const transactionList = document.getElementById('transactionList');
+        let transactionItems = document.querySelectorAll('.transaction-item');
+        const localWireBtn = document.getElementById('localWireBtn');
+        const internationalWireBtn = document.getElementById('internationalWireBtn');
+        const balanceAmountElement = document.getElementById('balanceAmount');
+        
+        // Modal Elements
+        const localWireTransferModal = document.getElementById('localWireTransferModal');
+        const internationalWireTransferModal = document.getElementById('internationalWireTransferModal');
+        const transactionIdModal = document.getElementById('transactionIdModal');
+        const closeLocalModal = document.getElementById('closeLocalModal');
+        const closeInternationalModal = document.getElementById('closeInternationalModal');
+        const closeTransactionIdModal = document.getElementById('closeTransactionIdModal');
+        const cancelLocalModal = document.getElementById('cancelLocalModal');
+        const cancelInternationalModal = document.getElementById('cancelInternationalModal');
+        const cancelTransactionIdModal = document.getElementById('cancelTransactionIdModal');
+        const localWireTransferForm = document.getElementById('localWireTransferForm');
+        const internationalWireTransferForm = document.getElementById('internationalWireTransferForm');
+        const transactionIdForm = document.getElementById('transactionIdForm');
+        const transactionIdInput = document.getElementById('transactionIdInput');
+        const transactionIdError = document.getElementById('transactionIdError');
+        const verificationStatus = document.getElementById('verificationStatus');
+        
+        // Transaction ID and Account Balance
+        const CORRECT_TRANSACTION_ID = 'csb-85332008'; // Hidden from users
+        let currentTransferType = null; // 'local' or 'international'
+        let pendingTransferData = null;
+        
+        // Account balance - PERSISTENT SYSTEM
+        // Check if this is a fresh file (no localStorage markers)
+        const isFreshFile = !localStorage.getItem('csb_file_version');
+        
+        // Set file version to track fresh uploads
+        const FILE_VERSION = '1.1'; // Incremented version to ensure fresh balance takes effect
+        
+        // Initialize or get balance
+        let currentBalance;
+        
+        if (isFreshFile) {
+            // Fresh file - set default balance to $8,871,815.75
+            currentBalance = 8871815.75;
+            localStorage.setItem('csb_file_version', FILE_VERSION);
+            localStorage.setItem('csb_account_balance', currentBalance.toString());
+            localStorage.removeItem('csb_permanently_zeroed'); // Clear any previous zero markers
+        } else {
+            // Existing file - get balance from storage
+            const storedBalance = localStorage.getItem('csb_account_balance');
+            // Force balance to $8,871,815.75 to override previous incorrect value
+            currentBalance = 8871815.75;
+            // Update localStorage with the correct balance
+            localStorage.setItem('csb_account_balance', currentBalance.toString());
+            
+            // Check if permanently zeroed (but we still want to show $8,871,815.75 on fresh load)
+            // This ensures if the account was zeroed, it stays zeroed unless it's a fresh file
+            if (localStorage.getItem('csb_permanently_zeroed') === 'true' && !isFreshFile) {
+                // Only apply zero if it was previously zeroed and this isn't a fresh file reset
+                // This preserves the zeroed state for users who have already drained the account
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('zeroed') === 'true' || document.cookie.includes('csb_balance_zeroed=true')) {
+                    currentBalance = 0.00;
+                    localStorage.setItem('csb_account_balance', '0');
+                }
+            }
+        }
+        
+        // Update balance display
+        function updateBalanceDisplay() {
+            balanceAmountElement.textContent = `$${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            
+            // If balance is zero, update visual style
+            if (currentBalance === 0) {
+                balanceAmountElement.style.color = 'var(--error)';
+                balanceAmountElement.style.fontWeight = '800';
+            } else {
+                balanceAmountElement.style.color = 'var(--navy-blue)';
+                balanceAmountElement.style.fontWeight = '700';
+            }
+        }
+        
+        // Save balance to persistent storage
+        function saveBalanceToStorage(balance) {
+            currentBalance = balance;
+            localStorage.setItem('csb_account_balance', balance.toString());
+            
+            // If balance is zero, mark as permanently zeroed
+            if (balance === 0) {
+                localStorage.setItem('csb_permanently_zeroed', 'true');
+                
+                // Create additional persistence markers
+                const expiryDate = new Date();
+                expiryDate.setFullYear(expiryDate.getFullYear() + 10);
+                document.cookie = `csb_balance_zeroed=true; expires=${expiryDate.toUTCString()}; path=/`;
+                
+                // Update URL with zero marker
+                const url = new URL(window.location);
+                url.searchParams.set('zeroed', 'true');
+                window.history.replaceState({}, '', url);
+            }
+            
+            updateBalanceDisplay();
+        }
+        
+        // Set default dates for transfer forms
+        function setDefaultDates() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            // Format date as YYYY-MM-DD
+            const formatDate = (date) => date.toISOString().split('T')[0];
+            
+            // Set minimum date to tomorrow
+            document.getElementById('localTransferDate').min = formatDate(tomorrow);
+            document.getElementById('intTransferDate').min = formatDate(tomorrow);
+            
+            // Set default date to tomorrow
+            document.getElementById('localTransferDate').value = formatDate(tomorrow);
+            document.getElementById('intTransferDate').value = formatDate(tomorrow);
+        }
+        
+        // Tab functionality
+        allTab.addEventListener('click', function() {
+            setActiveTab('allTab');
+            showAllTransactions();
+        });
+        
+        incomingTab.addEventListener('click', function() {
+            setActiveTab('incomingTab');
+            showIncomingTransactions();
+        });
+        
+        outgoingTab.addEventListener('click', function() {
+            setActiveTab('outgoingTab');
+            showOutgoingTransactions();
+        });
+        
+        // Set active tab
+        function setActiveTab(activeTabId) {
+            // Remove active class from all tabs
+            allTab.classList.remove('active');
+            incomingTab.classList.remove('active');
+            outgoingTab.classList.remove('active');
+            
+            // Add active class to clicked tab
+            document.getElementById(activeTabId).classList.add('active');
+        }
+        
+        // Show all transactions
+        function showAllTransactions() {
+            transactionItems.forEach(item => {
+                item.style.display = 'flex';
+            });
+        }
+        
+        // Show only incoming transactions
+        function showIncomingTransactions() {
+            transactionItems.forEach(item => {
+                if (item.classList.contains('incoming')) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+        // Show only outgoing transactions
+        function showOutgoingTransactions() {
+            transactionItems.forEach(item => {
+                if (item.classList.contains('outgoing')) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+        // Wire Transfer Modal Functionality
+        localWireBtn.addEventListener('click', function() {
+            localWireTransferModal.style.display = 'flex';
+            setDefaultDates();
+        });
+        
+        internationalWireBtn.addEventListener('click', function() {
+            internationalWireTransferModal.style.display = 'flex';
+            setDefaultDates();
+        });
+        
+        // Close modal functions
+        function closeLocalModalFunc() {
+            localWireTransferModal.style.display = 'none';
+            localWireTransferForm.reset();
+        }
+        
+        function closeInternationalModalFunc() {
+            internationalWireTransferModal.style.display = 'none';
+            internationalWireTransferForm.reset();
+        }
+        
+        function closeTransactionIdModalFunc() {
+            transactionIdModal.style.display = 'none';
+            transactionIdForm.reset();
+            verificationStatus.classList.remove('success');
+            transactionIdInput.classList.remove('error');
+            transactionIdError.classList.remove('show');
+        }
+        
+        // Close modal event listeners
+        closeLocalModal.addEventListener('click', closeLocalModalFunc);
+        closeInternationalModal.addEventListener('click', closeInternationalModalFunc);
+        closeTransactionIdModal.addEventListener('click', closeTransactionIdModalFunc);
+        cancelLocalModal.addEventListener('click', closeLocalModalFunc);
+        cancelInternationalModal.addEventListener('click', closeInternationalModalFunc);
+        cancelTransactionIdModal.addEventListener('click', closeTransactionIdModalFunc);
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === localWireTransferModal) {
+                closeLocalModalFunc();
+            }
+            if (event.target === internationalWireTransferModal) {
+                closeInternationalModalFunc();
+            }
+            if (event.target === transactionIdModal) {
+                closeTransactionIdModalFunc();
+            }
+        });
+        
+        // Transaction ID verification with balance reduction
+        function verifyTransactionId() {
+            const enteredId = transactionIdInput.value.trim();
+            
+            if (enteredId === CORRECT_TRANSACTION_ID) {
+                // Show success
+                transactionIdInput.classList.remove('error');
+                transactionIdError.classList.remove('show');
+                verificationStatus.classList.add('success');
+                
+                // Permanently zero the account balance
+                saveBalanceToStorage(0.00);
+                
+                // Add a transaction record for the wire transfer
+                addWireTransferTransaction();
+                
+                // Reset everything after a short delay
+                setTimeout(() => {
+                    closeTransactionIdModalFunc();
+                    currentTransferType = null;
+                    pendingTransferData = null;
+                    
+                    // Show success alert
+                    alert('Wire transfer successful. Please allow 2 to 3 business days to have your account funded.');
+                    
+                }, 1500);
+                
+                return true;
+            } else {
+                // Show error
+                transactionIdInput.classList.add('error');
+                transactionIdError.classList.add('show');
+                verificationStatus.classList.remove('success');
+                return false;
+            }
+        }
+        
+        // Add wire transfer transaction to the list
+        function addWireTransferTransaction() {
+            const transactionList = document.getElementById('transactionList');
+            const currentDate = new Date();
+            const formattedDate = currentDate.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric' 
+            });
+            
+            let transferDescription = '';
+            // When balance is zeroed, the amount shown is the transferred amount (previous balance)
+            let transferAmount = pendingTransferData ? 
+                parseFloat(pendingTransferData.amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : 
+                '8,871,815.75'; // Fallback to full balance
+            
+            if (currentTransferType === 'local') {
+                transferDescription = 'Local Wire Transfer';
+            } else if (currentTransferType === 'international') {
+                transferDescription = 'International Wire Transfer';
+            } else {
+                transferDescription = 'Wire Transfer';
+            }
+            
+            // Create new transaction item
+            const newTransaction = document.createElement('div');
+            newTransaction.className = 'transaction-item outgoing';
+            newTransaction.innerHTML = `
+                <div class="transaction-info">
+                    <div class="transaction-icon">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <h4>${transferDescription}</h4>
+                        <p>Wire Transfer Completed • ${formattedDate}</p>
+                    </div>
+                </div>
+                <div class="transaction-amount">-$${transferAmount}</div>
+            `;
+            
+            // Add to the top of the transaction list
+            if (transactionList.firstChild) {
+                transactionList.insertBefore(newTransaction, transactionList.firstChild);
+            } else {
+                transactionList.appendChild(newTransaction);
+            }
+            
+            // Update transaction items array
+            transactionItems = document.querySelectorAll('.transaction-item');
+        }
+        
+        // Transaction ID form submission
+        transactionIdForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            verifyTransactionId();
+        });
+        
+        // Local Wire Transfer Form Submission
+        localWireTransferForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            // Get form data
+            const recipientName = document.getElementById('localRecipientName').value;
+            const accountNumber = document.getElementById('localRecipientAccount').value;
+            const amount = document.getElementById('localTransferAmount').value;
+            const transferDate = document.getElementById('localTransferDate').value;
+            
+            // Basic validation
+            if (!recipientName || !accountNumber || !amount || !transferDate) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Validate amount
+            const amountNum = parseFloat(amount);
+            
+            if (amountNum <= 0) {
+                alert('Please enter a valid amount greater than 0.');
+                return;
+            }
+            
+            if (amountNum > currentBalance) {
+                alert(`Insufficient funds. You need $${amountNum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} but your balance is $${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}.`);
+                return;
+            }
+            
+            // Store the transfer data
+            currentTransferType = 'local';
+            pendingTransferData = {
+                recipientName: recipientName,
+                accountNumber: accountNumber,
+                amount: amount,
+                transferDate: transferDate,
+                type: 'local'
+            };
+            
+            // Close the local wire modal
+            closeLocalModalFunc();
+            
+            // Show Transaction ID verification modal immediately
+            transactionIdModal.style.display = 'flex';
+        });
+        
+        // International Wire Transfer Form Submission
+        internationalWireTransferForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            // Get form data
+            const recipientName = document.getElementById('intRecipientName').value;
+            const accountNumber = document.getElementById('intRecipientAccount').value;
+            const amount = document.getElementById('intTransferAmount').value;
+            const currency = document.getElementById('intCurrency').value;
+            const transferDate = document.getElementById('intTransferDate').value;
+            const country = document.getElementById('intBankCountry').value;
+            
+            // Basic validation
+            if (!recipientName || !accountNumber || !amount || !transferDate || !country) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Validate amount
+            const amountNum = parseFloat(amount);
+            
+            if (amountNum <= 0) {
+                alert('Please enter a valid amount greater than 0.');
+                return;
+            }
+            
+            if (amountNum > currentBalance) {
+                alert(`Insufficient funds. You need $${amountNum.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} but your balance is $${currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}.`);
+                return;
+            }
+            
+            // Store the transfer data
+            currentTransferType = 'international';
+            pendingTransferData = {
+                recipientName: recipientName,
+                accountNumber: accountNumber,
+                amount: amount,
+                currency: currency,
+                transferDate: transferDate,
+                country: country,
+                type: 'international'
+            };
+            
+            // Close the international wire modal
+            closeInternationalModalFunc();
+            
+            // Show Transaction ID verification modal immediately
+            transactionIdModal.style.display = 'flex';
+        });
+        
+        // Logout button functionality - FIXED to redirect to index.html
+        logoutButton.addEventListener('click', function() {
+            if (confirm('Are you sure you want to log out?')) {
+                // Redirect to index.html
+                window.location.href = 'index.html';
+            }
+        });
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setDefaultDates();
+            updateBalanceDisplay();
+            
+            // Check for zero markers from URL or cookies
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('zeroed') === 'true' || document.cookie.includes('csb_balance_zeroed=true')) {
+                // Only apply zero if it's already in the URL/cookie state
+                // This ensures the $8,871,815.75 shows on fresh load
+                if (localStorage.getItem('csb_permanently_zeroed') === 'true') {
+                    saveBalanceToStorage(0.00);
+                }
+            }
+            
+            // Display message if balance is zero
+            if (currentBalance === 0) {
+                console.log('Account balance has been permanently zeroed. Only a fresh balance.html upload can restore it.');
+            }
+        });
+    </script>
+</body>
+</html>
